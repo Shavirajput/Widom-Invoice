@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dental Clinic Invoice</title>
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #f3f3f3;
+        margin: 0;
+        padding: 20px;
+    }
+    .invoice-container {
+        background: #fff;
+        padding: 30px;
+        max-width: 800px;
+        margin: auto;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 3px solid #007bff;
+        padding-bottom: 10px;
+    }
+    .header img {
+        width: 120px;
+    }
+    .header h1 {
+        color: #2b6cb0;
+        font-size: 28px;
+    }
+    .info-section {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+    .info-left, .info-right {
+        width: 48%;
+    }
+    label {
+        font-weight: 600;
+    }
+    input, textarea {
+        width: 100%;
+        border: none;
+        border-bottom: 1px solid #ccc;
+        padding: 5px;
+        margin-bottom: 10px;
+        outline: none;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    th, td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: center;
+    }
+    th {
+        background: #c7d8f4;
+    }
+    td[contenteditable="true"] {
+        background: #f9f9f9;
+        outline: none;
+    }
+    .table-buttons {
+        margin-top: 10px;
+        text-align: right;
+    }
+    .table-buttons button {
+        background: #28a745;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        margin-left: 5px;
+        cursor: pointer;
+    }
+    .table-buttons button.remove {
+        background: #dc3545;
+    }
+    .total {
+        text-align: right;
+        font-weight: bold;
+        margin-top: 15px;
+        font-size: 16px;
+    }
+    .footer {
+        margin-top: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .buttons {
+        text-align: center;
+        margin-top: 30px;
+    }
+    .buttons button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .buttons button:hover {
+        background: #0056b3;
+    }
+
+    /* ✅ Hide buttons when printing */
+    @media print {
+        .buttons, .table-buttons {
+            display: none !important;
+        }
+        body {
+            background: #fff;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div class="invoice-container" id="invoice">
+    <div class="header">
+        <div>
+            <img src="https://wisdomdentalbangalore.com/wp-content/uploads/2025/07/Wisdom-Dental-Clinic-Logo-5.png" alt="Logo">
+            <p><strong>WISDOM Dental Clinic</strong><br>Passion at Work</p>
+        </div>
+        <h1>INVOICE</h1>
+    </div>
+
+    <div class="info-section">
+        <div class="info-left">
+            <label>Patient Name:</label>
+            <input type="text" id="patientName">
+            <label>Phone No:</label>
+            <input type="text" id="phoneNo">
+            <label>Address:</label>
+            <textarea id="address" rows="2"></textarea>
+        </div>
+        <div class="info-right">
+            <label>Invoice No:</label>
+            <input type="text" id="invoiceNo">
+            <label>Date:</label>
+            <input type="date" id="invoiceDate">
+        </div>
+    </div>
+
+    <table id="invoiceTable">
+        <thead>
+            <tr>
+                <th>SL No</th>
+                <th>Description</th>
+                <th>Amount (₹)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td contenteditable="true">Consultation</td>
+                <td contenteditable="true" oninput="updateTotal()">500</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="table-buttons">
+        <button onclick="addRow()">➕ Add Row</button>
+        <button class="remove" onclick="removeRow()">➖ Remove Row</button>
+    </div>
+
+    <div class="total">
+        Grand Total: ₹ <span id="grandTotal">500</span>
+    </div>
+
+    <label>Remarks / Notes:</label>
+    <textarea id="remarks" rows="3" placeholder="Enter any remarks..."></textarea>
+
+    <div class="footer">
+        <p><strong>Thank you for letting us brighten your smile.</strong></p>
+        <p>Signature / Stamp</p>
+    </div>
+</div>
+
+<div class="buttons">
+    <button onclick="printInvoice()">🖨️ Print</button>
+    <button onclick="downloadPDF()">⬇️ Download PDF</button>
+</div>
+
+<!-- jsPDF & html2canvas -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+<script>
+function updateTotal() {
+    let total = 0;
+    const rows = document.querySelectorAll("#invoiceTable tbody tr");
+    rows.forEach(row => {
+        const amountCell = row.cells[2];
+        const amount = parseFloat(amountCell.textContent.trim());
+        if (!isNaN(amount)) total += amount;
+    });
+    document.getElementById("grandTotal").textContent = total.toFixed(2);
+}
+
+function addRow() {
+    const table = document.querySelector("#invoiceTable tbody");
+    const newRow = document.createElement("tr");
+    const rowCount = table.rows.length + 1;
+    newRow.innerHTML = `
+        <td>${rowCount}</td>
+        <td contenteditable="true">New Service</td>
+        <td contenteditable="true" oninput="updateTotal()">0</td>
+    `;
+    table.appendChild(newRow);
+}
+
+function removeRow() {
+    const table = document.querySelector("#invoiceTable tbody");
+    if (table.rows.length > 1) {
+        table.deleteRow(-1);
+        updateTotal();
+    }
+}
+
+function printInvoice() {
+    window.print();
+}
+
+async function downloadPDF() {
+    const { jsPDF } = window.jspdf;
+    const invoice = document.getElementById("invoice");
+
+    // Temporarily hide buttons
+    document.querySelector(".buttons").style.display = "none";
+    document.querySelector(".table-buttons").style.display = "none";
+
+    const canvas = await html2canvas(invoice, { scale: 2 });
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    pdf.save("Invoice.pdf");
+
+    // Show buttons again
+    document.querySelector(".buttons").style.display = "block";
+    document.querySelector(".table-buttons").style.display = "block";
+}
+</script>
+
+</body>
+</html>
