@@ -11,15 +11,17 @@
         margin: 0;
         padding: 20px;
     }
+
     .invoice-container {
         background: #fff;
-        padding: 30px;
+        padding: 25px;
         max-width: 800px;
         margin: auto;
         box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        border-radius: 8px;
         position: relative;
-        overflow: visible !important;
     }
+
     .header {
         display: flex;
         justify-content: space-between;
@@ -27,60 +29,77 @@
         border-bottom: 3px solid #007bff;
         padding-bottom: 10px;
         flex-wrap: wrap;
+        gap: 10px;
     }
+
     .header img {
         width: 120px;
         height: auto;
     }
+
     .header h1 {
         color: #2b6cb0;
         font-size: 28px;
-        margin: 10px 0;
+        margin: 0;
     }
+
     .info-section {
         margin-top: 20px;
         display: flex;
         justify-content: space-between;
         flex-wrap: wrap;
     }
+
     .info-left, .info-right {
-        width: 48%;
+        flex: 1;
         min-width: 260px;
+        margin: 5px;
     }
+
     label {
         font-weight: 600;
+        display: block;
+        margin-top: 8px;
     }
+
     input, textarea {
         width: 100%;
         border: none;
         border-bottom: 1px solid #ccc;
         padding: 5px;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
         outline: none;
         font-size: 14px;
     }
+
     table {
         width: 100%;
         border-collapse: collapse;
         margin-top: 20px;
+        font-size: 14px;
     }
+
     th, td {
         border: 1px solid #ccc;
-        padding: 8px;
+        padding: 6px;
         text-align: center;
         word-wrap: break-word;
     }
+
     th {
         background: #c7d8f4;
     }
+
     td[contenteditable="true"] {
         background: #f9f9f9;
         outline: none;
     }
+
     .table-buttons {
         margin-top: 10px;
         text-align: right;
     }
+
     .table-buttons button {
         background: #28a745;
         color: white;
@@ -89,32 +108,73 @@
         border-radius: 4px;
         margin-left: 5px;
         cursor: pointer;
-        font-size: 14px;
+        font-size: 13px;
     }
+
     .table-buttons button.remove {
         background: #dc3545;
     }
+
     .total {
         text-align: right;
         font-weight: bold;
         margin-top: 15px;
-        font-size: 16px;
+        font-size: 15px;
     }
+
     .footer {
-        margin-top: 30px;
+        margin-top: 25px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         flex-wrap: wrap;
-    }
-    .footer p {
-        margin: 5px 0;
         font-size: 14px;
     }
+
+    .footer p {
+        margin: 5px 0;
+    }
+
+    .contact-footer {
+        margin-top: 15px;
+        text-align: center;
+        font-size: 13.5px;
+        color: #333;
+        page-break-inside: avoid;
+    }
+
+    .contact-line {
+        height: 2px;
+        background: linear-gradient(to right, transparent, #007bff, transparent);
+        margin-bottom: 10px;
+    }
+
+    .contact-info {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 25px;
+        line-height: 1.5;
+    }
+
+    .contact-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 6px;
+        text-align: left;
+    }
+
+    .contact-item span {
+        color: #2b6cb0;
+        font-size: 18px;
+        line-height: 1.2;
+    }
+
     .buttons {
         text-align: center;
-        margin-top: 30px;
+        margin-top: 25px;
     }
+
     .buttons button {
         background: #007bff;
         color: white;
@@ -125,77 +185,37 @@
         cursor: pointer;
         font-size: 15px;
     }
+
     .buttons button:hover {
         background: #0056b3;
     }
 
-    /* Contact Footer Section */
-    .contact-footer {
-        margin-top: 20px;
-        text-align: center;
-        font-size: 14px;
-        color: #333;
-        page-break-inside: avoid;
-    }
-    .contact-line {
-        height: 2px;
-        background: linear-gradient(to right, #007bff 0%, #007bff 10%, #ccc 50%, #007bff 90%, #007bff 100%);
-        border-radius: 2px;
-        margin-bottom: 15px;
-    }
-    .contact-info {
-        display: flex;
-        justify-content: space-around;
-        flex-wrap: wrap;
-        align-items: flex-start;
-    }
-    .contact-item {
-        display: flex;
-        align-items: center;
-        margin: 5px 15px;
-        min-width: 200px;
-    }
-    .contact-item span {
-        font-size: 22px;
-        color: #2b6cb0;
-        margin-right: 8px;
-    }
-    .contact-item p {
-        margin: 0;
-        line-height: 1.4;
+    /* Shrink content if many rows */
+    @media print {
+        body {
+            background: #fff;
+        }
+        .invoice-container {
+            box-shadow: none;
+            border: none;
+            transform: scale(0.95);
+            transform-origin: top center;
+        }
+        .buttons, .table-buttons {
+            display: none !important;
+        }
     }
 
-    /* Responsive */
     @media (max-width: 600px) {
-        .info-left, .info-right {
-            width: 100%;
+        .info-section {
+            flex-direction: column;
         }
         .header {
             text-align: center;
         }
-        .header img {
-            margin-bottom: 10px;
-        }
         .contact-info {
             flex-direction: column;
             align-items: center;
-        }
-        .contact-item {
-            justify-content: center;
-        }
-    }
-
-    /* Hide buttons when printing */
-    @media print {
-        .buttons, .table-buttons {
-            display: none !important;
-        }
-        body {
-            background: #fff;
-        }
-        .contact-footer {
-            display: block !important;
-            margin-top: 15px;
         }
     }
 </style>
@@ -206,7 +226,7 @@
     <div class="header">
         <div>
             <img src="https://wisdomdentalbangalore.com/wp-content/uploads/2025/07/Wisdom-Dental-Clinic-Logo-5.png" alt="Logo">
-            <p><strong>WISDOM Dental Clinic</strong><br>Passion at Work</p>
+            <p><strong>WISDOM DENTAL CLINIC</strong><br>Passion at Work</p>
         </div>
         <h1>INVOICE</h1>
     </div>
@@ -240,7 +260,7 @@
             <tr>
                 <td>1</td>
                 <td contenteditable="true">Consultation</td>
-                <td contenteditable="true" oninput="updateTotal()">500</td>
+                <td contenteditable="true" oninput="updateTotal()">1000</td>
             </tr>
         </tbody>
     </table>
@@ -251,7 +271,7 @@
     </div>
 
     <div class="total">
-        Grand Total: ₹ <span id="grandTotal">500</span>
+        Grand Total: ₹ <span id="grandTotal">1000</span>
     </div>
 
     <label>Remarks / Notes:</label>
@@ -262,28 +282,22 @@
         <p>Signature / Stamp</p>
     </div>
 
-    <!-- Contact Footer -->
     <div class="contact-footer">
         <div class="contact-line"></div>
         <div class="contact-info">
             <div class="contact-item">
                 <span>📞</span>
                 <div>
-                    <p>+91-97407 11993</p>
-                    <p>+91-96868 47945</p>
+                    <p>+91-97407 11993, +91-96868 47945</p>
                 </div>
             </div>
             <div class="contact-item">
                 <span>✉️</span>
-                <div>
-                    <p>info@wisdomdentalbangalore.com</p>
-                </div>
+                <div><p>info@wisdomdentalbangalore.com</p></div>
             </div>
             <div class="contact-item">
                 <span>📍</span>
-                <div>
-                    <p>525/A, 9th Cross Rd,7th Block, <br>Jayanagar,Bengaluru, Karnataka 560070</p>
-                </div>
+                <div><p>525/A, 9th Cross Rd, 7th Block, Jayanagar,<br>Bengaluru, Karnataka 560070</p></div>
             </div>
         </div>
     </div>
@@ -294,17 +308,14 @@
     <button onclick="downloadPDF()">⬇️ Download PDF</button>
 </div>
 
-<!-- jsPDF & html2canvas -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
 <script>
 function updateTotal() {
     let total = 0;
-    const rows = document.querySelectorAll("#invoiceTable tbody tr");
-    rows.forEach(row => {
-        const amountCell = row.cells[2];
-        const amount = parseFloat(amountCell.textContent.trim());
+    document.querySelectorAll("#invoiceTable tbody tr").forEach(row => {
+        const amount = parseFloat(row.cells[2].textContent.trim());
         if (!isNaN(amount)) total += amount;
     });
     document.getElementById("grandTotal").textContent = total.toFixed(2);
@@ -338,16 +349,10 @@ async function downloadPDF() {
     const { jsPDF } = window.jspdf;
     const invoice = document.getElementById("invoice");
 
-    // Temporarily hide buttons
     document.querySelector(".buttons").style.display = "none";
     document.querySelector(".table-buttons").style.display = "none";
 
-    const canvas = await html2canvas(invoice, { 
-        scale: 2, 
-        useCORS: true, 
-        scrollY: 0, 
-        windowWidth: document.body.scrollWidth 
-    });
+    const canvas = await html2canvas(invoice, { scale: 2, useCORS: true });
     const imgData = canvas.toDataURL("image/png");
     const pdf = new jsPDF("p", "mm", "a4");
     const pdfWidth = pdf.internal.pageSize.getWidth();
@@ -355,7 +360,6 @@ async function downloadPDF() {
     pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
     pdf.save("Invoice.pdf");
 
-    // Show buttons again
     document.querySelector(".buttons").style.display = "block";
     document.querySelector(".table-buttons").style.display = "block";
 }
