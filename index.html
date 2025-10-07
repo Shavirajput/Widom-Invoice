@@ -3,221 +3,295 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dental Clinic Invoice</title>
+<title>Professional Dental Clinic Invoice</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
+    :root {
+        --primary-color: #4A90E2; /* A professional, calming blue */
+        --secondary-color: #f7f9fc;
+        --text-color: #333;
+        --border-color: #dee2e6;
+        --header-bg: #4a91e21a;
+    }
+
     body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: #f3f3f3;
+        font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--secondary-color);
         margin: 0;
         padding: 20px;
+        color: var(--text-color);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
 
     .invoice-container {
         background: #fff;
-        padding: 25px;
-        max-width: 800px;
-        margin: auto;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        border-radius: 8px;
-        position: relative;
+        padding: 30px;
+        max-width: 850px;
+        margin: 20px auto;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        border-radius: 12px;
+        border-top: 5px solid var(--primary-color);
     }
 
     .header {
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        border-bottom: 3px solid #007bff;
-        padding-bottom: 10px;
+        align-items: flex-start;
+        padding-bottom: 15px;
+        border-bottom: 2px solid var(--border-color);
         flex-wrap: wrap;
-        gap: 10px;
+        gap: 20px;
+    }
+
+    .header .clinic-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
     }
 
     .header img {
-        width: 120px;
+        width: 100px;
         height: auto;
+        border-radius: 8px;
+    }
+    
+    .clinic-details p {
+        margin: 0;
+        line-height: 1.4;
+    }
+    
+    .clinic-details .clinic-name {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--primary-color);
+    }
+    
+    .clinic-details .tagline {
+        font-size: 0.9rem;
+        color: #777;
     }
 
-    .header h1 {
-        color: #2b6cb0;
-        font-size: 28px;
+    .header .invoice-title h1 {
+        color: var(--primary-color);
+        font-size: 2.2rem;
         margin: 0;
+        text-align: right;
+        font-weight: 700;
     }
 
     .info-section {
-        margin-top: 20px;
+        margin-top: 25px;
         display: flex;
         justify-content: space-between;
         flex-wrap: wrap;
+        gap: 20px;
     }
 
-    .info-left, .info-right {
+    .info-group {
         flex: 1;
-        min-width: 260px;
-        margin: 5px;
+        min-width: 280px;
     }
-
-    label {
-        font-weight: 600;
+    
+    .info-group label {
+        font-weight: 500;
         display: block;
-        margin-top: 8px;
+        margin-bottom: 5px;
+        color: #555;
+        font-size: 0.9rem;
     }
 
-    input, textarea {
+    .info-group input, .info-group textarea {
         width: 100%;
-        border: none;
-        border-bottom: 1px solid #ccc;
-        padding: 5px;
-        margin-bottom: 8px;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        padding: 8px 10px;
+        margin-bottom: 10px;
         outline: none;
-        font-size: 14px;
+        font-size: 1rem;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        box-sizing: border-box;
+    }
+
+    .info-group input:focus, .info-group textarea:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+    }
+    
+    textarea {
+        resize: vertical;
     }
 
     table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 20px;
-        font-size: 14px;
+        margin-top: 30px;
+        font-size: 1rem;
     }
 
     th, td {
-        border: 1px solid #ccc;
-        padding: 6px;
+        border: 1px solid var(--border-color);
+        padding: 12px;
         text-align: center;
-        word-wrap: break-word;
     }
 
     th {
-        background: #c7d8f4;
+        background: var(--header-bg);
+        font-weight: 500;
+        color: var(--primary-color);
+    }
+    
+    tbody tr:nth-child(even) {
+        background-color: #f8f9fa;
     }
 
     td[contenteditable="true"] {
-        background: #f9f9f9;
+        background-color: #fff;
         outline: none;
+        transition: background-color 0.2s;
     }
+    
+    td[contenteditable="true"]:focus {
+        background-color: #eef5ff;
+    }
+    
+    td:nth-child(2) { text-align: left; } /* Description column */
+    td:nth-child(3) { text-align: right; } /* Amount column */
 
     .table-buttons {
-        margin-top: 10px;
+        margin-top: 15px;
         text-align: right;
     }
 
     .table-buttons button {
-        background: #28a745;
-        color: white;
+        background: none;
+        color: #fff;
         border: none;
-        padding: 6px 12px;
-        border-radius: 4px;
-        margin-left: 5px;
+        padding: 8px 14px;
+        border-radius: 6px;
+        margin-left: 8px;
         cursor: pointer;
-        font-size: 13px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: background-color 0.2s, transform 0.2s;
     }
+    
+    .table-buttons button.add { background-color: #28a745; }
+    .table-buttons button.remove { background-color: #dc3545; }
+    .table-buttons button:hover { transform: translateY(-1px); }
 
-    .table-buttons button.remove {
-        background: #dc3545;
+    .summary-section {
+        margin-top: 25px;
+        display: flex;
+        justify-content: flex-end;
     }
-
-    .total {
-        text-align: right;
-        font-weight: bold;
-        margin-top: 15px;
-        font-size: 15px;
+    
+    .summary-details {
+        width: 100%;
+        max-width: 280px;
+    }
+    
+    .total-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        font-size: 1.1rem;
+    }
+    
+    .total-row.grand-total {
+        font-weight: 700;
+        font-size: 1.2rem;
+        background-color: var(--header-bg);
+        color: var(--primary-color);
+        border-radius: 6px;
     }
 
     .footer {
-        margin-top: 25px;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 2px solid var(--border-color);
         display: flex;
         justify-content: space-between;
         align-items: center;
-        flex-wrap: wrap;
-        font-size: 14px;
+        font-size: 0.9rem;
+        color: #777;
     }
 
-    .footer p {
-        margin: 5px 0;
+    .signature-box {
+        border-top: 1px solid #999;
+        padding-top: 5px;
+        text-align: center;
     }
 
     .contact-footer {
-        margin-top: 15px;
+        margin-top: 30px;
+        padding-top: 15px;
         text-align: center;
-        font-size: 13.5px;
-        color: #333;
-        page-break-inside: avoid;
+        font-size: 0.9rem;
+        color: #555;
+        border-top: 1px dashed var(--border-color);
     }
-
-    .contact-line {
-        height: 2px;
-        background: linear-gradient(to right, transparent, #007bff, transparent);
-        margin-bottom: 10px;
-    }
-
-    .contact-info {
+    
+    .contact-footer .contact-info {
         display: flex;
-        justify-content: space-around;
-        flex-wrap: nowrap;
-        gap: 50px;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 20px 40px;
         line-height: 1.5;
+        margin-top: 10px;
     }
 
-    .contact-item {
-        display: flex;
-        align-items: center;
-        flex-wrap: nowrap;
-        gap: 6px;
-        text-align: left;
-    }
-
-
-    .contact-item span {
-        color: #2b6cb0;
-        font-size: 18px;
-        line-height: 1.2;
-    }
-
-    .buttons {
+    .action-buttons {
         text-align: center;
-        margin-top: 25px;
+        margin: 30px 0;
     }
 
-    .buttons button {
-        background: #007bff;
+    .action-buttons button {
+        background-color: var(--primary-color);
         color: white;
         border: none;
-        padding: 10px 20px;
+        padding: 12px 25px;
         margin: 5px;
-        border-radius: 5px;
+        border-radius: 6px;
         cursor: pointer;
-        font-size: 15px;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: background-color 0.2s, box-shadow 0.2s;
     }
 
-    .buttons button:hover {
-        background: #0056b3;
+    .action-buttons button:hover {
+        background-color: #3a7bc8;
+        box-shadow: 0 4px 10px rgba(74, 144, 226, 0.3);
     }
 
-    /* Shrink content if many rows */
+    /* Print & Responsive Styles */
+    @media (max-width: 768px) {
+        .invoice-container { padding: 20px; }
+        .header, .info-section { flex-direction: column; }
+        .header .invoice-title h1 { text-align: left; margin-top: 15px; }
+    }
+
     @media print {
-        body {
-            background: #fff;
-        }
+        body { background: #fff; padding: 0; margin: 0; }
         .invoice-container {
             box-shadow: none;
             border: none;
-            transform: scale(0.95);
+            border-top: none;
+            max-width: 100%;
+            padding: 0;
+            margin: 0;
+            transform: scale(0.95); /* Scale down slightly to ensure fit */
             transform-origin: top center;
         }
-        .buttons, .table-buttons {
-            display: none !important;
-        }
-    }
-
-    @media (max-width: 600px) {
-        .info-section {
-            flex-direction: column;
-        }
-        .header {
-            text-align: center;
-        }
-        .contact-info {
-            flex-direction: column;
-            align-items: center;
+        .action-buttons, .table-buttons { display: none !important; }
+        
+        /* Aggressive shrinking for fitting more rows */
+        body, th, td, input, textarea { font-size: 10pt !important; }
+        th, td { padding: 5px 8px !important; }
+        .info-group input, .info-group textarea { padding: 4px 6px; }
+        .header, .info-section, .footer, .summary-section, .contact-footer {
+            margin-top: 15px !important;
+            padding-bottom: 5px !important;
         }
     }
 </style>
@@ -225,146 +299,209 @@
 <body>
 
 <div class="invoice-container" id="invoice">
-    <div class="header">
-        <div>
-            <img src="https://wisdomdentalbangalore.com/wp-content/uploads/2025/07/Wisdom-Dental-Clinic-Logo-5.png" alt="Logo">
-            <p><strong>WISDOM DENTAL CLINIC</strong><br>Passion at Work</p>
+    <header class="header">
+        <div class="clinic-info">
+            <img src="https://wisdomdentalbangalore.com/wp-content/uploads/2025/07/Wisdom-Dental-Clinic-Logo-5.png" alt="Clinic Logo">
+            <div class="clinic-details">
+                <p class="clinic-name">WISDOM DENTAL CLINIC</p>
+                <p class="tagline">Passion at Work</p>
+            </div>
         </div>
-        <h1>INVOICE</h1>
-    </div>
+        <div class="invoice-title">
+            <h1>INVOICE</h1>
+        </div>
+    </header>
 
-    <div class="info-section">
-        <div class="info-left">
-            <label>Patient Name:</label>
-            <input type="text" id="patientName">
-            <label>Phone No:</label>
-            <input type="text" id="phoneNo">
-            <label>Address:</label>
-            <textarea id="address" rows="2"></textarea>
+    <section class="info-section">
+        <div class="info-group">
+            <label for="patientName">Patient Name:</label>
+            <input type="text" id="patientName" placeholder="Enter patient's name">
+            <label for="phoneNo">Phone No:</label>
+            <input type="text" id="phoneNo" placeholder="Enter phone number">
+            <label for="address">Address:</label>
+            <textarea id="address" rows="2" placeholder="Enter patient's address"></textarea>
         </div>
-        <div class="info-right">
-            <label>Invoice No:</label>
-            <input type="text" id="invoiceNo">
-            <label>Date:</label>
+        <div class="info-group">
+            <label for="invoiceNo">Invoice No:</label>
+            <input type="text" id="invoiceNo" placeholder="e.g., INV-001">
+            <label for="invoiceDate">Date:</label>
             <input type="date" id="invoiceDate">
         </div>
-    </div>
+    </section>
 
     <table id="invoiceTable">
         <thead>
             <tr>
-                <th>SL No</th>
-                <th>Description</th>
-                <th>Amount (₹)</th>
+                <th style="width: 10%;">SL No</th>
+                <th style="width: 60%;">Description</th>
+                <th style="width: 30%;">Amount (₹)</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>1</td>
                 <td contenteditable="true">Consultation</td>
-                <td contenteditable="true" oninput="updateTotal()">1000</td>
+                <td contenteditable="true" class="amount">1000</td>
             </tr>
         </tbody>
     </table>
 
     <div class="table-buttons">
-        <button onclick="addRow()">➕ Add Row</button>
-        <button class="remove" onclick="removeRow()">➖ Remove Row</button>
+        <button class="add" id="addRowBtn">➕ Add Row</button>
+        <button class="remove" id="removeRowBtn">➖ Remove Row</button>
     </div>
 
-    <div class="total">
-        Grand Total: ₹ <span id="grandTotal">1000</span>
+    <section class="summary-section">
+        <div class="summary-details">
+             <div class="total-row grand-total">
+                <span>Grand Total</span>
+                <span>₹ <span id="grandTotal">1000.00</span></span>
+            </div>
+        </div>
+    </section>
+    
+    <div class="info-group" style="margin-top: 20px;">
+        <label for="remarks">Remarks / Notes:</label>
+        <textarea id="remarks" rows="3" placeholder="Enter any remarks here..."></textarea>
     </div>
 
-    <label>Remarks / Notes:</label>
-    <textarea id="remarks" rows="3" placeholder="Enter any remarks..."></textarea>
-
-    <div class="footer">
+    <footer class="footer">
         <p><strong>Thank you for letting us brighten your smile.</strong></p>
-        <p>Signature / Stamp</p>
-    </div>
+        <div class="signature-box">Signature / Stamp</div>
+    </footer>
 
     <div class="contact-footer">
-        <div class="contact-line"></div>
         <div class="contact-info">
-            <div class="contact-item">
-                <span>📞</span>
-                <div>
-                    <p>+91-97407 11993 <br>+91-96868 47945</p>
-                </div>
-            </div>
-            <div class="contact-item">
-                <span>✉️</span>
-                <div><p>info@wisdomdentalbangalore.com</p></div>
-            </div>
-            <div class="contact-item">
-                <span>📍</span>
-                <div><p>525/A, 9th Cross Rd, 7th Block, Jayanagar,<br>Bengaluru, Karnataka 560070</p></div>
-            </div>
+            <span>📞 +91-97407 11993 / +91-96868 47945</span>
+            <span>✉️ info@wisdomdentalbangalore.com</span>
+            <span>📍 525/A, 9th Cross Rd, 7th Block, Jayanagar, Bengaluru</span>
         </div>
     </div>
 </div>
 
-<div class="buttons">
-    <button onclick="printInvoice()">🖨️ Print</button>
-    <button onclick="downloadPDF()">⬇️ Download PDF</button>
+<div class="action-buttons">
+    <button id="printBtn">🖨️ Print Invoice</button>
+    <button id="downloadBtn">⬇️ Download as PDF</button>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <script>
-function updateTotal() {
-    let total = 0;
-    document.querySelectorAll("#invoiceTable tbody tr").forEach(row => {
-        const amount = parseFloat(row.cells[2].textContent.trim());
-        if (!isNaN(amount)) total += amount;
+document.addEventListener('DOMContentLoaded', () => {
+    const tableBody = document.querySelector("#invoiceTable tbody");
+    const addRowBtn = document.getElementById('addRowBtn');
+    const removeRowBtn = document.getElementById('removeRowBtn');
+    const printBtn = document.getElementById('printBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+
+    // Set current date automatically
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    document.getElementById('invoiceDate').value = `${yyyy}-${mm}-${dd}`;
+
+    const renumberRows = () => {
+        const rows = tableBody.querySelectorAll('tr');
+        rows.forEach((row, index) => {
+            row.cells[0].textContent = index + 1;
+        });
+    };
+
+    const updateTotal = () => {
+        let total = 0;
+        tableBody.querySelectorAll('tr').forEach(row => {
+            const amountCell = row.cells[2];
+            // Clean the content to ensure it's a valid number
+            let value = amountCell.textContent.trim().replace(/[^0-9.]/g, '');
+            const amount = parseFloat(value) || 0;
+            total += amount;
+        });
+        document.getElementById('grandTotal').textContent = total.toFixed(2);
+    };
+
+    const addRow = () => {
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td></td>
+            <td contenteditable="true">New Service</td>
+            <td contenteditable="true" class="amount">0.00</td>
+        `;
+        tableBody.appendChild(newRow);
+        renumberRows();
+    };
+
+    const removeRow = () => {
+        if (tableBody.rows.length > 1) {
+            tableBody.deleteRow(-1);
+            renumberRows();
+            updateTotal();
+        } else {
+            alert("At least one item must be present.");
+        }
+    };
+
+    // Event Delegation for updating total and validating input
+    tableBody.addEventListener('input', (e) => {
+        if (e.target.classList.contains('amount')) {
+            // Allow only numbers and a single decimal point
+            const cell = e.target;
+            const originalText = cell.textContent;
+            cell.textContent = originalText.replace(/[^0-9.]/g, '');
+            if ((cell.textContent.match(/\./g) || []).length > 1) {
+                cell.textContent = originalText.slice(0, -1);
+            }
+            updateTotal();
+        }
     });
-    document.getElementById("grandTotal").textContent = total.toFixed(2);
-}
 
-function addRow() {
-    const table = document.querySelector("#invoiceTable tbody");
-    const newRow = document.createElement("tr");
-    const rowCount = table.rows.length + 1;
-    newRow.innerHTML = `
-        <td>${rowCount}</td>
-        <td contenteditable="true">New Service</td>
-        <td contenteditable="true" oninput="updateTotal()">0</td>
-    `;
-    table.appendChild(newRow);
-}
+    addRowBtn.addEventListener('click', addRow);
+    removeRowBtn.addEventListener('click', removeRow);
+    printBtn.addEventListener('click', () => window.print());
 
-function removeRow() {
-    const table = document.querySelector("#invoiceTable tbody");
-    if (table.rows.length > 1) {
-        table.deleteRow(-1);
-        updateTotal();
-    }
-}
+    downloadBtn.addEventListener('click', async () => {
+        const invoiceElement = document.getElementById('invoice');
+        const actionButtons = document.querySelector('.action-buttons');
+        
+        // Hide buttons before capture
+        actionButtons.style.display = 'none';
 
-function printInvoice() {
-    window.print();
-}
+        try {
+            const canvas = await html2canvas(invoiceElement, {
+                scale: 2, // Higher scale for better quality
+                useCORS: true,
+                logging: false
+            });
 
-async function downloadPDF() {
-    const { jsPDF } = window.jspdf;
-    const invoice = document.getElementById("invoice");
+            const imgData = canvas.toDataURL('image/png');
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4'
+            });
 
-    document.querySelector(".buttons").style.display = "none";
-    document.querySelector(".table-buttons").style.display = "none";
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+            
+            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+            
+            const invoiceNumber = document.getElementById('invoiceNo').value || 'invoice';
+            pdf.save(`${invoiceNumber}.pdf`);
 
-    const canvas = await html2canvas(invoice, { scale: 2, useCORS: true });
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("p", "mm", "a4");
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-    pdf.save("Invoice.pdf");
+        } catch (error) {
+            console.error("Failed to generate PDF:", error);
+            alert("Sorry, there was an error generating the PDF.");
+        } finally {
+            // Show buttons again
+            actionButtons.style.display = 'block';
+        }
+    });
 
-    document.querySelector(".buttons").style.display = "block";
-    document.querySelector(".table-buttons").style.display = "block";
-}
+    // Initial calculation on load
+    updateTotal();
+});
 </script>
 
 </body>
