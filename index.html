@@ -9,21 +9,26 @@
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         background: #f3f3f3;
         margin: 0;
-        padding: 20px;
+        padding: 15px;
     }
     .invoice-container {
         background: #fff;
-        padding: 30px;
-        max-width: 800px;
+        padding: 25px;
+        max-width: 900px;
         margin: auto;
         box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        border-radius: 8px;
     }
+
+    /* ===== Header ===== */
     .header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         border-bottom: 3px solid #007bff;
         padding-bottom: 10px;
+        flex-wrap: wrap;
+        gap: 10px;
     }
     .header img {
         width: 120px;
@@ -31,18 +36,25 @@
     .header h1 {
         color: #2b6cb0;
         font-size: 28px;
+        margin: 0;
     }
+
+    /* ===== Info Section ===== */
     .info-section {
         margin-top: 20px;
         display: flex;
         justify-content: space-between;
         flex-wrap: wrap;
+        gap: 20px;
     }
     .info-left, .info-right {
-        width: 48%;
+        flex: 1;
+        min-width: 250px;
     }
     label {
         font-weight: 600;
+        display: block;
+        margin-top: 10px;
     }
     input, textarea {
         width: 100%;
@@ -51,16 +63,21 @@
         padding: 5px;
         margin-bottom: 10px;
         outline: none;
+        font-size: 15px;
     }
+
+    /* ===== Table ===== */
     table {
         width: 100%;
         border-collapse: collapse;
         margin-top: 20px;
+        font-size: 15px;
     }
     th, td {
         border: 1px solid #ccc;
         padding: 8px;
         text-align: center;
+        word-wrap: break-word;
     }
     th {
         background: #c7d8f4;
@@ -69,9 +86,12 @@
         background: #f9f9f9;
         outline: none;
     }
+
+    /* ===== Buttons ===== */
     .table-buttons {
         margin-top: 10px;
         text-align: right;
+        flex-wrap: wrap;
     }
     .table-buttons button {
         background: #28a745;
@@ -79,12 +99,34 @@
         border: none;
         padding: 6px 12px;
         border-radius: 4px;
-        margin-left: 5px;
+        margin: 5px;
         cursor: pointer;
+        font-size: 14px;
     }
     .table-buttons button.remove {
         background: #dc3545;
     }
+
+    .buttons {
+        text-align: center;
+        margin-top: 30px;
+        flex-wrap: wrap;
+    }
+    .buttons button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 15px;
+    }
+    .buttons button:hover {
+        background: #0056b3;
+    }
+
+    /* ===== Total & Footer ===== */
     .total {
         text-align: right;
         font-weight: bold;
@@ -96,31 +138,47 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-    }
-    .buttons {
-        text-align: center;
-        margin-top: 30px;
-    }
-    .buttons button {
-        background: #007bff;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        margin: 5px;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-    .buttons button:hover {
-        background: #0056b3;
+        flex-wrap: wrap;
+        font-size: 15px;
     }
 
-    /* ✅ Hide buttons when printing */
+    /* ===== Responsive Table Scroll ===== */
+    .table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    /* ===== Hide Buttons in Print ===== */
     @media print {
         .buttons, .table-buttons {
             display: none !important;
         }
         body {
             background: #fff;
+        }
+        .invoice-container {
+            box-shadow: none;
+            border: none;
+        }
+    }
+
+    /* ===== Mobile Adjustments ===== */
+    @media (max-width: 600px) {
+        .header {
+            text-align: center;
+        }
+        .header img {
+            margin: 0 auto;
+        }
+        .header h1 {
+            width: 100%;
+            font-size: 24px;
+        }
+        table, th, td {
+            font-size: 14px;
+        }
+        .total {
+            text-align: left;
         }
     }
 </style>
@@ -153,22 +211,24 @@
         </div>
     </div>
 
-    <table id="invoiceTable">
-        <thead>
-            <tr>
-                <th>SL No</th>
-                <th>Description</th>
-                <th>Amount (₹)</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td contenteditable="true">Consultation</td>
-                <td contenteditable="true" oninput="updateTotal()">500</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="table-wrapper">
+        <table id="invoiceTable">
+            <thead>
+                <tr>
+                    <th>SL No</th>
+                    <th>Description</th>
+                    <th>Amount (₹)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td contenteditable="true">Consultation</td>
+                    <td contenteditable="true" oninput="updateTotal()">500</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
     <div class="table-buttons">
         <button onclick="addRow()">➕ Add Row</button>
@@ -237,10 +297,13 @@ async function downloadPDF() {
     const { jsPDF } = window.jspdf;
     const invoice = document.getElementById("invoice");
 
-    // Temporarily hide buttons
-    document.querySelector(".buttons").style.display = "none";
-    document.querySelector(".table-buttons").style.display = "none";
+    // Hide buttons temporarily
+    const btns = document.querySelector(".buttons");
+    const tableBtns = document.querySelector(".table-buttons");
+    btns.style.display = "none";
+    tableBtns.style.display = "none";
 
+    // Create PDF
     const canvas = await html2canvas(invoice, { scale: 2 });
     const imgData = canvas.toDataURL("image/png");
     const pdf = new jsPDF("p", "mm", "a4");
@@ -249,9 +312,9 @@ async function downloadPDF() {
     pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
     pdf.save("Invoice.pdf");
 
-    // Show buttons again
-    document.querySelector(".buttons").style.display = "block";
-    document.querySelector(".table-buttons").style.display = "block";
+    // Restore buttons
+    btns.style.display = "block";
+    tableBtns.style.display = "block";
 }
 </script>
 
